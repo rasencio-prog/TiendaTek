@@ -1,0 +1,1 @@
+export default function UsuariosPage() { return <h1>Gestión de Usuarios</h1>; }
