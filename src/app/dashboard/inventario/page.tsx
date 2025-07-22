@@ -13,7 +13,7 @@ export type Product = {
 };
 
 export default async function InventarioPage() {
-  const cookieStore = cookies(); // Obtenemos el cookieStore aquí
+  const cookieStore = cookies() as ReadonlyRequestCookies; // Casteo explícito
   const supabase = createClient(cookieStore); // Se lo pasamos a createClient
 
   const { data: products, error } = await supabase
