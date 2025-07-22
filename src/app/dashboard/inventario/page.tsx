@@ -13,7 +13,7 @@ export type Product = {
 };
 
 async function getProducts(): Promise<Product[]> {
-  const supabase = createClient();
+  const supabase = createClient(cookies());
   const { data, error } = await supabase
     .from("productos")
     .select("id, nombre, descripcion, precio, stock, activo");
