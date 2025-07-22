@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'Credenciales inválidas' }, { status: 401 });
   }
 
-  const session = await getIronSession<SessionData>(cookies(), sessionOptions);
+  const session = await getIronSession<SessionData>(cookies() as any, sessionOptions);
   session.isLoggedIn = true;
   session.userId = user.id;
   session.email = user.email;
