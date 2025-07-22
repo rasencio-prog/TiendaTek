@@ -1,6 +1,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { ProductTable } from "@/components/ProductTable";
+import { cookies } from 'next/headers'; // <-- ¡NUEVA IMPORTACIÓN!
 
 // Definimos el tipo de dato para un producto, basándonos en tu tabla
 export type Product = {
