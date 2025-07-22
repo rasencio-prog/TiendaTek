@@ -38,3 +38,5 @@ export default async function InventarioPage() {
     </div>
   );
 }
+
+// Comentario de prueba para Git
