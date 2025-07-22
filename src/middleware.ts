@@ -19,8 +19,9 @@ const sessionOptions = {
 };
 
 export async function middleware(req: NextRequest) {
-  const cookieStore = cookies(); // Obtenemos el cookie store
+  
   // Obtenemos la sesión a partir de las cookies de la petición
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const session = await getIronSession<SessionData>(cookies() as any, sessionOptions);
 
   // Si el usuario no está logueado (isLoggedIn no es true), lo redirigimos a la página de login
