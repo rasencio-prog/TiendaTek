@@ -1,31 +1,11 @@
-
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseService } from '@/lib/supabase/service'; // <-- ¡NUEVA IMPORTACIÓN!
+import { supabaseService } from '@/lib/supabase/service';
 import bcrypt from 'bcryptjs';
-import { getIronSession } from 'iron-session';
 import { cookies } from 'next/headers';
-
-interface SessionData {
-  isLoggedIn: boolean;
-  userId: string;
-  email: string;
-  rol: string;
-}
-
-const sessionOptions = {
-  password: process.env.SECRET_COOKIE_PASSWORD as string,
-  cookieName: 'tiendatek-session',
-  cookieOptions: {
-    secure: process.env.NODE_ENV === 'production',
-  },
-};
+import { getSession } from '@/lib/session'; // <-- ¡NUEVA IMPORTACIÓN!
 
 export async function POST(req: NextRequest) {
-  // --- DEPURACIÓN DE VARIABLES DE ENTORNO ---
-  console.log("Supabase URL:", process.env.NEXT_PUBLIC_SUPABASE_URL ? "Cargada" : "NO CARGADA");
-  console.log("Supabase Service Key:", process.env.SUPABASE_SERVICE_ROLE_KEY ? "Cargada" : "NO CARGADA");
-  // --- FIN DEPURACIÓN ---
-
+  const session = await getSession(cookies()); // <-- ¡USAMOS EL NUEVO HELPER!
   const { email, password } = await req.json();
 
   if (!email || !password) {
@@ -34,7 +14,6 @@ export async function POST(req: NextRequest) {
 
   console.log(`Buscando usuario con email: ${email}`);
 
-  // Usamos el cliente de servicio para esta operación privilegiada
   const { data: user, error: userError } = await supabaseService
     .from('usuarios')
     .select('id, email, password_hash, rol')
@@ -65,7 +44,6 @@ export async function POST(req: NextRequest) {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const session = await getIronSession<SessionData>(cookies() as any, sessionOptions);
   session.isLoggedIn = true;
   session.userId = user.id;
   session.email = user.email;
